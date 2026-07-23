@@ -131,6 +131,7 @@
             letter-spacing: 1.5px;
             text-transform: uppercase;
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .btn-insta svg {
@@ -143,6 +144,24 @@
         .btn-insta:hover {
             background: var(--text-main);
             color: var(--bg-dark);
+        }
+
+        /* TOMBOL POPUP FIXED DI HEADER / FLOATING */
+        .btn-fixed-header {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(10, 11, 14, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--line-accent);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .btn-fixed-header:hover {
+            background: #4cd137;
+            color: #000;
+            border-color: #4cd137;
         }
 
         .status-banner {
@@ -393,55 +412,49 @@
             margin-top: 2px;
         }
 
-        /* DATA TABEL SISWA STYLING */
-        .student-table-section {
-            margin-bottom: 60px;
-        }
-
+        /* DATA TABEL SISWA IN MODAL STYLING */
         .table-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
         .table-responsive {
             width: 100%;
-            overflow-x: auto;
-            background: var(--card-bg);
+            max-height: 60vh;
+            overflow-y: auto;
             border: 1px solid var(--line-color);
-            backdrop-filter: blur(8px);
+            background: rgba(10, 11, 14, 0.95);
         }
 
         .custom-table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
         }
 
         .custom-table th {
-            background: rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            background: #101217;
             border-bottom: 1px solid var(--line-accent);
-            padding: 14px 16px;
+            padding: 12px 14px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             letter-spacing: 1px;
             color: var(--text-muted);
             text-transform: uppercase;
+            z-index: 2;
         }
 
         .custom-table td {
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-bottom: 1px solid var(--line-color);
             vertical-align: middle;
-        }
-
-        .custom-table tbody tr {
-            cursor: pointer;
-            transition: background 0.2s ease;
         }
 
         .custom-table tbody tr:hover {
@@ -449,8 +462,8 @@
         }
 
         .avatar-cell {
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             border: 1px solid var(--line-color);
             object-fit: cover;
@@ -460,28 +473,12 @@
         .badge-jk {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
-            padding: 2px 8px;
+            padding: 2px 6px;
             border: 1px solid var(--line-color);
             border-radius: 2px;
         }
 
-        .btn-detail {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--line-color);
-            padding: 4px 10px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-detail:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        /* Modal Styling */
+        /* Modal Base Styling */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -498,63 +495,32 @@
             background: var(--bg-dark);
             border: 1px solid var(--line-accent);
             width: 100%;
-            max-width: 400px;
-            padding: 30px;
+            max-width: 850px;
+            padding: 25px;
             position: relative;
-            text-align: center;
             box-shadow: 0 0 25px rgba(0,0,0,0.8);
             animation: modalIn 0.3s ease;
         }
 
         @keyframes modalIn {
-            from { transform: scale(0.9); opacity: 0; }
+            from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
         .modal-close {
             position: absolute;
-            top: 10px;
-            right: 15px;
+            top: 12px;
+            right: 18px;
             background: transparent;
             border: none;
             color: var(--text-muted);
             font-size: 1.8rem;
             cursor: pointer;
+            transition: color 0.2s;
         }
 
-        .modal-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 2px solid var(--line-accent);
-            margin-bottom: 15px;
-        }
-
-        .modal-info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        .info-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--line-color);
-            padding: 8px 12px;
-        }
-
-        .info-label {
-            display: block;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .info-val {
-            font-size: 0.85rem;
-            font-weight: 600;
+        .modal-close:hover {
+            color: #fff;
         }
 
         .org-chart {
@@ -865,6 +831,12 @@
         }
 
         @media (max-width: 600px) {
+            .btn-fixed-header {
+                top: 10px;
+                right: 10px;
+                font-size: 0.65rem;
+                padding: 8px 12px;
+            }
             .status-header {
                 flex-direction: column;
                 align-items: flex-start;
@@ -893,6 +865,12 @@
 </head>
 <body>
 
+    <!-- TOMBOL FIXED DI POPUP DATA SISWA -->
+    <button class="btn-insta btn-fixed-header" onclick="openTableModal()">
+        <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span>Data Siswa (35)</span>
+    </button>
+
     <div class="container">
         <header>
             <div class="icons-wrapper">
@@ -911,6 +889,10 @@
                     <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
                     <span>Class Oceanic IG</span>
                 </a>
+                <button onclick="openTableModal()" class="btn-insta" style="background: rgba(255,255,255,0.1);">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                    <span>Lihat Anggota Kelas</span>
+                </button>
             </div>
         </header>
 
@@ -935,60 +917,32 @@
         <div class="roster-grid" id="roster-container">
         </div>
 
-        <!-- TABEL DATA SISWA INTERAKTIF -->
-        <div class="student-table-section">
-            <div class="section-header">Daftar Peserta Didik X-11</div>
-            
-            <div class="table-controls">
-                <input type="text" id="student-search" class="form-control" style="max-width: 350px;" placeholder="Cari nama, NIS, atau NISN..." onkeyup="filterStudents()">
-                <span class="subtitle-mono" id="student-count">Total: 35 Siswa</span>
-            </div>
-
-            <div class="table-responsive">
-                <table class="custom-table" id="student-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Profil</th>
-                            <th>Nama Lengkap</th>
-                            <th>NIS</th>
-                            <th>NISN</th>
-                            <th>L/P</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="student-tbody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- MODAL DETAIL SISWA -->
-        <div id="student-modal" class="modal-overlay" onclick="closeModal(event)">
+        <!-- MODAL POPUP TABEL DATA SISWA -->
+        <div id="table-modal" class="modal-overlay" onclick="closeTableModal(event)">
             <div class="modal-card">
-                <button class="modal-close" onclick="closeModalDirect()">&times;</button>
-                <div class="modal-body">
-                    <img id="modal-img" src="" alt="Avatar" class="modal-avatar">
-                    <h3 id="modal-name" style="font-size: 1.1rem; text-transform: uppercase;">Nama Siswa</h3>
-                    <p id="modal-role" class="subtitle-mono" style="margin-top: 5px; color: #4cd137;">Siswa X-11 SMADELTA</p>
-                    <div class="modal-info-grid">
-                        <div class="info-item">
-                            <span class="info-label">NIS</span>
-                            <span class="info-val" id="modal-nis">-</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">NISN</span>
-                            <span class="info-val" id="modal-nisn">-</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Jenis Kelamin</span>
-                            <span class="info-val" id="modal-jk">-</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Agama</span>
-                            <span class="info-val" id="modal-agama">Islam</span>
-                        </div>
-                    </div>
+                <button class="modal-close" onclick="closeTableModalDirect()">&times;</button>
+                <div style="font-family: 'Cinzel', serif; font-size: 1.3rem; margin-bottom: 15px; letter-spacing: 2px;">Daftar Peserta Didik X-11</div>
+                
+                <div class="table-controls">
+                    <input type="text" id="student-search" class="form-control" style="max-width: 300px;" placeholder="Cari nama, NIS, atau NISN..." onkeyup="filterStudents()">
+                    <span class="subtitle-mono" id="student-count">Total: 35 Siswa</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table" id="student-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Profil</th>
+                                <th>Nama Lengkap</th>
+                                <th>NIS</th>
+                                <th>NISN</th>
+                                <th>L/P</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-tbody">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1242,7 +1196,6 @@
             data.forEach(s => {
                 const avatar = getAvatarUrl(s.nama, s.jk);
                 const tr = document.createElement("tr");
-                tr.onclick = () => openModal(s);
                 tr.innerHTML = `
                     <td>${s.no}</td>
                     <td><img src="${avatar}" alt="${s.nama}" class="avatar-cell"></td>
@@ -1250,7 +1203,6 @@
                     <td><span class="subtitle-mono">${s.nis}</span></td>
                     <td><span class="subtitle-mono">${s.nisn}</span></td>
                     <td><span class="badge-jk">${s.jk}</span></td>
-                    <td><button class="btn-detail" onclick="event.stopPropagation(); openModalDirect(${s.no})">Detail</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1268,28 +1220,19 @@
             renderTable(filtered);
         }
 
-        function openModal(student) {
-            document.getElementById("modal-img").src = getAvatarUrl(student.nama, student.jk);
-            document.getElementById("modal-name").innerText = student.nama;
-            document.getElementById("modal-nis").innerText = student.nis;
-            document.getElementById("modal-nisn").innerText = student.nisn;
-            document.getElementById("modal-jk").innerText = student.jk === 'L' ? 'Laki-Laki' : 'Perempuan';
-            document.getElementById("student-modal").style.display = "flex";
+        // CONTROL POPUP TABEL
+        function openTableModal() {
+            document.getElementById("table-modal").style.display = "flex";
         }
 
-        function openModalDirect(no) {
-            const student = dataSiswa.find(s => s.no === no);
-            if (student) openModal(student);
-        }
-
-        function closeModal(event) {
-            if (event.target.id === "student-modal") {
-                document.getElementById("student-modal").style.display = "none";
+        function closeTableModal(event) {
+            if (event.target.id === "table-modal") {
+                document.getElementById("table-modal").style.display = "none";
             }
         }
 
-        function closeModalDirect() {
-            document.getElementById("student-modal").style.display = "none";
+        function closeTableModalDirect() {
+            document.getElementById("table-modal").style.display = "none";
         }
 
         // RENDER JADWAL PIKET
