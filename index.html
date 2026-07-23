@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Piket, Pelajaran & Struktur X-11 SMADELTA</title>
+    <title>Jadwal Piket, Pelajaran & Data Siswa X-11 SMADELTA</title>
     
     <link rel="icon" href="https://i.ibb.co.com/YBMDf5Dv/Untitled-design-5.png" type="image/png">
 
@@ -393,6 +393,170 @@
             margin-top: 2px;
         }
 
+        /* DATA TABEL SISWA STYLING */
+        .student-table-section {
+            margin-bottom: 60px;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--card-bg);
+            border: 1px solid var(--line-color);
+            backdrop-filter: blur(8px);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.88rem;
+        }
+
+        .custom-table th {
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--line-accent);
+            padding: 14px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .custom-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line-color);
+            vertical-align: middle;
+        }
+
+        .custom-table tbody tr {
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .custom-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .avatar-cell {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--line-color);
+            object-fit: cover;
+            display: block;
+        }
+
+        .badge-jk {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border: 1px solid var(--line-color);
+            border-radius: 2px;
+        }
+
+        .btn-detail {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--line-color);
+            padding: 4px 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-detail:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* Modal Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--line-accent);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(0,0,0,0.8);
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        .modal-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid var(--line-accent);
+            margin-bottom: 15px;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line-color);
+            padding: 8px 12px;
+        }
+
+        .info-label {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .info-val {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
         .org-chart {
             display: flex;
             flex-direction: column;
@@ -771,6 +935,64 @@
         <div class="roster-grid" id="roster-container">
         </div>
 
+        <!-- TABEL DATA SISWA INTERAKTIF -->
+        <div class="student-table-section">
+            <div class="section-header">Daftar Peserta Didik X-11</div>
+            
+            <div class="table-controls">
+                <input type="text" id="student-search" class="form-control" style="max-width: 350px;" placeholder="Cari nama, NIS, atau NISN..." onkeyup="filterStudents()">
+                <span class="subtitle-mono" id="student-count">Total: 35 Siswa</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="custom-table" id="student-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Profil</th>
+                            <th>Nama Lengkap</th>
+                            <th>NIS</th>
+                            <th>NISN</th>
+                            <th>L/P</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-tbody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MODAL DETAIL SISWA -->
+        <div id="student-modal" class="modal-overlay" onclick="closeModal(event)">
+            <div class="modal-card">
+                <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+                <div class="modal-body">
+                    <img id="modal-img" src="" alt="Avatar" class="modal-avatar">
+                    <h3 id="modal-name" style="font-size: 1.1rem; text-transform: uppercase;">Nama Siswa</h3>
+                    <p id="modal-role" class="subtitle-mono" style="margin-top: 5px; color: #4cd137;">Siswa X-11 SMADELTA</p>
+                    <div class="modal-info-grid">
+                        <div class="info-item">
+                            <span class="info-label">NIS</span>
+                            <span class="info-val" id="modal-nis">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">NISN</span>
+                            <span class="info-val" id="modal-nisn">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Jenis Kelamin</span>
+                            <span class="info-val" id="modal-jk">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Agama</span>
+                            <span class="info-val" id="modal-agama">Islam</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="section-header">Struktur Organisasi</div>
         <div class="org-chart">
             <div class="org-level">
@@ -915,6 +1137,45 @@
     </div>
 
     <script>
+        // DATA SISWA LENGKAP X-11
+        const dataSiswa = [
+            { no: 1, nis: "2026355", nisn: "0119711393", nama: "ABDILLAH FAUZAN PURNOMO", jk: "L" },
+            { no: 2, nis: "2026356", nisn: "0108035435", nama: "ADAM ICHSAN", jk: "L" },
+            { no: 3, nis: "2026357", nisn: "0106142104", nama: "AFDELIA JUANITA PUTRI MAHARANI", jk: "P" },
+            { no: 4, nis: "2026358", nisn: "0106409049", nama: "ALISHA MUDA ABIMANYU", jk: "P" },
+            { no: 5, nis: "2026360", nisn: "0111752892", nama: "BAGAMA HANGGA KUSUMO", jk: "L" },
+            { no: 6, nis: "2026361", nisn: "0108798566", nama: "BAGUS FAISAL CAHYO KARTIKO", jk: "L" },
+            { no: 7, nis: "2026362", nisn: "0112472478", nama: "BRENDA PARAMITHA MAYNINA PUTRI", jk: "P" },
+            { no: 8, nis: "2026363", nisn: "0105705436", nama: "DAFFA FIRDAUS NAWWAR", jk: "L" },
+            { no: 9, nis: "2026364", nisn: "0118912847", nama: "FADHIL ARDIANSYAH", jk: "L" },
+            { no: 10, nis: "2026365", nisn: "0105985554", nama: "FAWAD SULAIMAN MAHMOOD PARMANTO", jk: "L" },
+            { no: 11, nis: "2026366", nisn: "0108861341", nama: "FIRLIANO AHMAD FAIZ", jk: "L" },
+            { no: 12, nis: "2026367", nisn: "3102436575", nama: "HANIFAH NUR JANNAH UTOYO", jk: "P" },
+            { no: 13, nis: "2026368", nisn: "0117610490", nama: "HASSYA AQILA RAISHARESSA", jk: "P" },
+            { no: 14, nis: "2026369", nisn: "0112248570", nama: "KEANU EL JABAR NAGAPUTRA", jk: "L" },
+            { no: 15, nis: "2026370", nisn: "0107427060", nama: "KEYLA VONICAISYA MUGNY SAGITA", jk: "P" },
+            { no: 16, nis: "2026371", nisn: "0119040007", nama: "LAILA ASYA KIRANA", jk: "P" },
+            { no: 17, nis: "2026372", nisn: "0111650394", nama: "LATHIFATUL QOLBI", jk: "P" },
+            { no: 18, nis: "2026373", nisn: "0118337766", nama: "LORENZO TIRTA PRIAWAN", jk: "L" },
+            { no: 19, nis: "2026374", nisn: "0107030333", nama: "MUHAMAD FAREZA", jk: "L" },
+            { no: 20, nis: "2026375", nisn: "0113828980", nama: "NABEL HARUN ALRASYID", jk: "L" },
+            { no: 21, nis: "2026376", nisn: "0111736467", nama: "NADZIF PUTRA PRIYANTANA", jk: "L" },
+            { no: 22, nis: "2026377", nisn: "0102806964", nama: "PUTU JOENANTA AKBAR KURNIAWAN", jk: "L" },
+            { no: 23, nis: "2026378", nisn: "0114459678", nama: "RADISTA HALYA QUEENA", jk: "P" },
+            { no: 24, nis: "2026379", nisn: "0113187339", nama: "RAFA HAKAM ARDYAWAN", jk: "L" },
+            { no: 25, nis: "2026380", nisn: "0105634624", nama: "RAFID RASENDRIYA NAYOTTAMA DHENNI", jk: "L" },
+            { no: 26, nis: "2026381", nisn: "0116607471", nama: "RAMA WASTU KAYANA", jk: "L" },
+            { no: 27, nis: "2026382", nisn: "0111356037", nama: "RUSYDA ANISA NUR FAZA", jk: "P" },
+            { no: 28, nis: "2026383", nisn: "0117307851", nama: "SALWA NEYSAVINA", jk: "P" },
+            { no: 29, nis: "2026384", nisn: "3125577837", nama: "SELVI RAHAYU MUNAWAROH", jk: "P" },
+            { no: 30, nis: "2026385", nisn: "0102532634", nama: "SHAKIRA ZIVEN AURELYA", jk: "P" },
+            { no: 31, nis: "2026386", nisn: "0101128366", nama: "SHIZUKA WIDYANA ADI", jk: "P" },
+            { no: 32, nis: "2026387", nisn: "0109047688", nama: "TIEN SARASWATI", jk: "P" },
+            { no: 33, nis: "2026388", nisn: "0113666035", nama: "TSABITA ARIFAH HUMAIRA", jk: "P" },
+            { no: 34, nis: "2026389", nisn: "0119672462", nama: "ULYA NAFIISAH PUTRI", jk: "P" },
+            { no: 35, nis: "2026390", nisn: "0116732625", nama: "ZIDAN NIKO PUTRA", jk: "L" }
+        ];
+
         const jadwalPiket = [
             { id: 1, hari: "SENIN", nama: ["Adam", "Fawad", "Firliano", "Nabel", "Afdelia", "Lathifa", "Rusyda"] },
             { id: 2, hari: "SELASA", nama: ["Fadhil", "Akbar", "Hakam", "Zidan", "Keyla", "Salwa", "Naya"] },
@@ -966,6 +1227,72 @@
             ]
         };
 
+        // HELPER AVATAR
+        function getAvatarUrl(name, jk) {
+            const background = jk === 'L' ? '0d2538' : '380d25';
+            const color = jk === 'L' ? '4cd137' : 'e84393';
+            return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${background}&color=${color}&bold=true&length=2`;
+        }
+
+        // RENDER TABEL SISWA
+        function renderTable(data) {
+            const tbody = document.getElementById("student-tbody");
+            tbody.innerHTML = "";
+            
+            data.forEach(s => {
+                const avatar = getAvatarUrl(s.nama, s.jk);
+                const tr = document.createElement("tr");
+                tr.onclick = () => openModal(s);
+                tr.innerHTML = `
+                    <td>${s.no}</td>
+                    <td><img src="${avatar}" alt="${s.nama}" class="avatar-cell"></td>
+                    <td style="font-weight: 600;">${s.nama}</td>
+                    <td><span class="subtitle-mono">${s.nis}</span></td>
+                    <td><span class="subtitle-mono">${s.nisn}</span></td>
+                    <td><span class="badge-jk">${s.jk}</span></td>
+                    <td><button class="btn-detail" onclick="event.stopPropagation(); openModalDirect(${s.no})">Detail</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById("student-count").innerText = `Total: ${data.length} Siswa`;
+        }
+
+        function filterStudents() {
+            const query = document.getElementById("student-search").value.toLowerCase();
+            const filtered = dataSiswa.filter(s => 
+                s.nama.toLowerCase().includes(query) || 
+                s.nis.includes(query) || 
+                s.nisn.includes(query)
+            );
+            renderTable(filtered);
+        }
+
+        function openModal(student) {
+            document.getElementById("modal-img").src = getAvatarUrl(student.nama, student.jk);
+            document.getElementById("modal-name").innerText = student.nama;
+            document.getElementById("modal-nis").innerText = student.nis;
+            document.getElementById("modal-nisn").innerText = student.nisn;
+            document.getElementById("modal-jk").innerText = student.jk === 'L' ? 'Laki-Laki' : 'Perempuan';
+            document.getElementById("student-modal").style.display = "flex";
+        }
+
+        function openModalDirect(no) {
+            const student = dataSiswa.find(s => s.no === no);
+            if (student) openModal(student);
+        }
+
+        function closeModal(event) {
+            if (event.target.id === "student-modal") {
+                document.getElementById("student-modal").style.display = "none";
+            }
+        }
+
+        function closeModalDirect() {
+            document.getElementById("student-modal").style.display = "none";
+        }
+
+        // RENDER JADWAL PIKET
         function initPiket() {
             const now = new Date();
             const currentDay = now.getDay(); 
@@ -1046,6 +1373,7 @@
             });
         }
 
+        // GIST & KOMENTAR SYSTEM
         const GIST_ID = "d0a6760702710c82d9a4761ddca0011a";
         const GIST_TOKEN = "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";
         const FILE_NAME = "comment.json";
@@ -1205,6 +1533,7 @@
 
         window.onload = function() {
             initPiket();
+            renderTable(dataSiswa);
             fetchComments();
             setInterval(fetchComments, 5000);
         };
